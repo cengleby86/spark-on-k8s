@@ -1,0 +1,13 @@
+---
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: jupyter-notebooks
+  labels:
+    argocd.argoproj.io/managed-by: argocd
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jupyter-notebooks
+  namespace: jupyter-notebooks
