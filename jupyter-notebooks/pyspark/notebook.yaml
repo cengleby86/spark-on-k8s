@@ -28,15 +28,13 @@ spec:
       labels:
         app: pyspark-jupyter-notebook
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 100
+        fsGroup: 100
+        fsGroupChangePolicy: "OnRootMismatch"
       serviceAccount: jupyter-notebooks
       serviceAccountName: jupyter-notebooks
-      initContainers:
-        - name: chown-jupyter-working-dir
-          image: alpine
-          command: ['sh', '-c', 'chown -R 1000:100 /home/jovyan/work']
-          volumeMounts:
-            - name: workdir
-              mountPath: /home/jovyan/work
       containers:
         - name: pyspark-jupyter-notebook
           image: quay.io/rh_ee_cengleby/pyspark-notebook:0.7
@@ -63,8 +61,6 @@ spec:
       - name: workdir
         persistentVolumeClaim:
           claimName: pyspark-jupyter-notebook-work-files
-        
-
 ---
 apiVersion: v1
 kind: Service
