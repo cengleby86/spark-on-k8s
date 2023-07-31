@@ -49,15 +49,9 @@ spec:
           ports:
             - containerPort: 8888
           volumeMounts:
-          - name: kube-config-spark-drivers
-            mountPath: /home/jovyan/config
-            readOnly: true
           - name: workdir
             mountPath: /home/jovyan/work
       volumes:
-      - name: kube-config-spark-drivers
-        secret:
-          secretName: kube-config-spark-drivers
       - name: workdir
         persistentVolumeClaim:
           claimName: pyspark-jupyter-notebook-work-files
