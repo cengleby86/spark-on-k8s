@@ -1,0 +1,9 @@
+{{- range .Values.partitions }}
+# Each Namespace should be set for different teams or projects.
+# Each Namespace carves out promises compute for a team or a project.
+# Overpartitioning can lead to inefficient usage of resources and high levels of idle compute.
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: {{ .name | quote }}
+{{- end }}

@@ -1,0 +1,48 @@
+# Default values for spark-on-k8s.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: quay.io/rh_ee_cengleby/pyspark-notebook:0.7
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+partitions:
+
+  - name: spark-events
+    quota:
+      pods: 2
+      requests:
+        cpu: 2
+        memory: 6Gi
+      limits:
+        cpu: 6
+        memory: 18Gi
+    limitRange:
+      - type: Pod
+        max:
+          cpu: "2"
+          memory: 4Gi
+        min:
+          cpu: "500m"
+          memory: 250Mi
+      - type: Container
+        default:
+          cpu: "500m"
+          memory: 250Mi
+        defaultRequest:
+          cpu: "500m"
+          memory: 250Mi
+        max:
+          cpu: "2"
+          memory: 4Gi
+        min:
+          cpu: "500m"
+          memory: 250Mi
+
+jupyterNotebooks:
+  serviceAccount: "jupyter-notebooks-sa"
+  namespace: "jupyter-notebooks"
+  users:
+    - name: chris

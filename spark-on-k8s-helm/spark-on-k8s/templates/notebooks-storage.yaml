@@ -1,0 +1,14 @@
+{{- $root := . -}}
+{{- range .Values.jupyterNotebooks.users }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .name }}-pyspark-jupyter-notebook-workfiles
+  namespace: {{ $root.Values.jupyterNotebooks.namespace | quote }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+{{- end }}

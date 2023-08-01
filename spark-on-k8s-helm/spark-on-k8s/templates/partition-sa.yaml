@@ -1,0 +1,7 @@
+{{- range .Values.partitions }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .name }}-sa
+  namespace: {{ .name | quote }}
+{{- end }}

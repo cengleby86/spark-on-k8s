@@ -1,0 +1,47 @@
+{{- $root := . -}}
+{{- range .Values.jupyterNotebooks.users }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .name }}-pyspark-jupyter-notebook
+  namespace: {{ $root.Values.jupyterNotebooks.namespace | quote }}
+  labels:
+    app: {{ .name }}-pyspark-jupyter-notebook
+spec:
+  selector:
+    matchLabels:
+      app: {{ .name }}-pyspark-jupyter-notebook
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}-pyspark-jupyter-notebook
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 100
+        fsGroup: 100
+        fsGroupChangePolicy: "OnRootMismatch"
+      serviceAccount: {{ $root.Values.jupyterNotebooks.serviceAccount | quote }}
+      serviceAccountName: {{ $root.Values.jupyterNotebooks.serviceAccount | quote }}
+      containers:
+        - name: {{ .name }}-pyspark-jupyter-notebook
+          image: {{ $root.Values.image.repository | quote }}
+          imagePullPolicy: {{ $root.Values.image.pullPolicy | quote }}
+          resources:
+            limits:
+              memory: 5Gi
+              cpu: "2"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+          ports:
+            - containerPort: 8888
+          volumeMounts:
+          - name: workdir
+            mountPath: /home/jovyan/work
+      volumes:
+      - name: workdir
+        persistentVolumeClaim:
+          claimName: {{ .name }}-pyspark-jupyter-notebook-workfiles
+{{- end }}

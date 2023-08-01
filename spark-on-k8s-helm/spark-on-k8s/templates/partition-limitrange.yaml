@@ -1,0 +1,14 @@
+{{- range .Values.partitions }}
+# Limit Ranges set the default minimum and maximum 
+# compute constraints for each Pod or Container at the namespace level.
+# This can prevent individual jobs from requesting excessive resources 
+# and ensures a minimum quality of service for pods.
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: {{ .name }}-compute-limits
+  namespace: {{ .name | quote }}
+spec:
+  limits: 
+{{ toYaml .limitRange | indent 3 }}
+{{- end }}

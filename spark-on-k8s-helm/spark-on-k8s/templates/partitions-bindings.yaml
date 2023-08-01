@@ -1,0 +1,16 @@
+{{- $root := . -}}
+{{- range .Values.partitions }}
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .name }}-pod-scheduler
+  namespace: {{ .name | quote }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $root.Values.jupyterNotebooks.serviceAccount | quote }}
+    namespace: {{ $root.Values.jupyterNotebooks.namespace | quote }}
+roleRef:
+  kind: Role
+  name: {{ .name }}-pod-scheduler
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}

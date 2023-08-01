@@ -1,0 +1,17 @@
+{{- range .Values.partitions }}
+# Setting Quotas, ensures that your Spark jobs won't consume more resources than allocated.
+# This prevents jobs from negatively impacting other applications or services in your cluster.
+# Quotas should be adjusted based on live usage patterns.
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: {{ .name }}-compute-resources
+  namespace: {{ .name | quote }}
+spec:
+  hard:
+    pods: {{ .quota.pods | quote }}
+    requests.cpu: {{ .quota.requests.cpu | quote }}
+    requests.memory: {{ .quota.requests.memory | quote }}
+    limits.cpu: {{ .quota.limits.cpu | quote }}
+    limits.memory: {{ .quota.limits.memory | quote }}
+{{- end }}
