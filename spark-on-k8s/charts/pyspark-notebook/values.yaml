@@ -1,0 +1,14 @@
+image:
+  repository: quay.io/rh_ee_cengleby/pyspark-notebook:0.7
+  pullPolicy: IfNotPresent
+  tag: ""
+
+namespace: "jupyter-notebooks"
+serviceAccount: "jupyter-notebooks-sa"
+partition: spark-events
+
+notebooks:
+  - name: pyspark
+    ports:
+      from: 4041
+      to: 4043

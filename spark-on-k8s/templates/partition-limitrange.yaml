@@ -6,8 +6,8 @@
 apiVersion: v1
 kind: LimitRange
 metadata:
-  name: {{ .name }}-compute-limits
-  namespace: {{ .name | quote }}
+  name: {{ .namespace }}-compute-limits
+  namespace: {{ .namespace | quote }}
 spec:
   limits: 
 {{ toYaml .limitRange | indent 3 }}

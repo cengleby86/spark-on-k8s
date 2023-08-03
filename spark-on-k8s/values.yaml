@@ -1,0 +1,19 @@
+partitions:
+
+  - namespace: spark-events
+    quota:
+      pods: 2
+      requests:
+        cpu: 2
+        memory: 6Gi
+      limits:
+        cpu: 6
+        memory: 18Gi
+    limitRange:
+      - type: Pod
+        max:
+          cpu: "2"
+          memory: 4Gi
+        min:
+          cpu: "500m"
+          memory: 250Mi

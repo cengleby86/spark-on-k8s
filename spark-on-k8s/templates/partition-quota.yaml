@@ -5,8 +5,8 @@
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: {{ .name }}-compute-resources
-  namespace: {{ .name | quote }}
+  name: {{ .namespace }}-compute-resources
+  namespace: {{ .namespace | quote }}
 spec:
   hard:
     pods: {{ .quota.pods | quote }}

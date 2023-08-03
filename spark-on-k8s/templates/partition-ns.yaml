@@ -5,5 +5,5 @@
 apiVersion: project.openshift.io/v1
 kind: Project
 metadata:
-  name: {{ .name | quote }}
+  name: {{ .namespace | quote }}
 {{- end }}

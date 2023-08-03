@@ -1,4 +1,4 @@
 apiVersion: project.openshift.io/v1
 kind: Project
 metadata:
-  name: {{ .Values.jupyterNotebooks.namespace }}
+  name: {{ .Values.namespace }}

@@ -1,31 +1,31 @@
 {{- $root := . -}}
-{{- range .Values.jupyterNotebooks.users }}
+{{- range .Values.notebooks }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .name }}-pyspark-jupyter-notebook
-  namespace: {{ $root.Values.jupyterNotebooks.namespace | quote }}
+  name: {{ .name }}-notebook
+  namespace: {{ $root.Values.namespace | quote }}
   labels:
-    app: {{ .name }}-pyspark-jupyter-notebook
+    app: {{ .name }}-notebook
 spec:
   selector:
     matchLabels:
-      app: {{ .name }}-pyspark-jupyter-notebook
+      app: {{ .name }}-notebook
   replicas: 1
   template:
     metadata:
       labels:
-        app: {{ .name }}-pyspark-jupyter-notebook
+        app: {{ .name }}-notebook
     spec:
       securityContext:
         runAsUser: 1000
         runAsGroup: 100
         fsGroup: 100
         fsGroupChangePolicy: "OnRootMismatch"
-      serviceAccount: {{ $root.Values.jupyterNotebooks.serviceAccount | quote }}
-      serviceAccountName: {{ $root.Values.jupyterNotebooks.serviceAccount | quote }}
+      serviceAccount: {{ $root.Values.serviceAccount | quote }}
+      serviceAccountName: {{ $root.Values.serviceAccount | quote }}
       containers:
-        - name: {{ .name }}-pyspark-jupyter-notebook
+        - name: {{ .name }}-notebook
           image: {{ $root.Values.image.repository | quote }}
           imagePullPolicy: {{ $root.Values.image.pullPolicy | quote }}
           resources:
@@ -43,5 +43,5 @@ spec:
       volumes:
       - name: workdir
         persistentVolumeClaim:
-          claimName: {{ .name }}-pyspark-jupyter-notebook-workfiles
+          claimName: {{ .name }}-notebook-workfiles
 {{- end }}

@@ -1,0 +1,24 @@
+{{- $root := . -}}
+{{- range .Values.notebooks }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .name }}-notebook
+  namespace: {{ $root.Values.namespace | quote }}
+spec:
+  type: LoadBalancer
+  ports:
+  - name: notebook-gui
+    port: 8888
+    targetPort: 8888
+  - name: spark-driver-gui
+    port: 4040
+    targetPort: 4040
+  {{- range untilStep (.ports.from | int) (.ports.to | int) 1 }}
+  - name: spark-driver-port
+    port: {{ . }}
+    targetPort: {{ . }}
+  {{- end }}
+  selector:
+    app: {{ .name }}-notebook
+{{- end }}
